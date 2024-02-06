@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import './App.css'
 import { format, set } from "date-fns";
+import {Jobs, CvPreviewJobList, handleJobSubmit, 
+  updateJobInfoObject, updateWorkExperience, handleJobUpdate} from './work'
+
+export {formatDate}
 
 function App() {
 
@@ -13,12 +17,15 @@ function App() {
   const [toggleDegreeList, setToggleDegreeList] = useState(true)
 
   const [jobInfo, setJobInfo] = useState({id: 0, companyName: '', positionTitle: '', startDate: '', endDate: '', description: ''})
+  const [updatedJobInfo, setUpdatedJobInfo] = useState({companyName: '', positionTitle: '', startDate: '', endDate: '', description: '' })
   const [workExperience, setWorkExperience] = useState('')
+  const [toggleWorkExperienceInputs, setToggleWorkExperienceInputs] = useState(true)
+  const [toggleJobList, setToggleJobList] = useState(true)
 
   function educationInputs(inputsFor, id) {
-    let returnedInputsHTML = ''
+    let returnedEducationInputsHTML = ''
     if (inputsFor === 'submitting') {
-      returnedInputsHTML = <>
+      returnedEducationInputsHTML = <>
         <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateDegreeInfoObject('studyTitle', element, degreeInfo, setDegreeInfo  )}} ></Input>
         <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateDegreeInfoObject('schoolName', element, degreeInfo, setDegreeInfo )}} ></Input>
         <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateDegreeInfoObject('studyStartDate', element, degreeInfo, setDegreeInfo  )}} ></Input>
@@ -34,18 +41,52 @@ function App() {
         </div>
       </>
     } else if (inputsFor === 'editing') {
-      returnedInputsHTML = <>
+      returnedEducationInputsHTML = <>
         <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateEducation('studyTitle', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
         <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateEducation('schoolName', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
         <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateEducation('studyStartDate', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
         <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateEducation('studyEndDate', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
-        <button type='button' onClick={() => { handleEductionUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList )}}>Save</button>
+        <button type='button' onClick={() => { handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList )}}>Save</button>
       </>
     }
     return (
-      returnedInputsHTML
+      returnedEducationInputsHTML
     )
-  } 
+  }
+
+  function workInputs(inputsFor, id) {
+    let returnedWorkInputsHTML = ''
+    if (inputsFor === 'submitting') {
+      returnedWorkInputsHTML = <>
+        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateJobInfoObject('companyName', element, jobInfo, setJobInfo )}} ></Input>
+        <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateJobInfoObject('positionTitle', element, jobInfo, setJobInfo )}} ></Input>
+        <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateJobInfoObject('startDate', element, jobInfo, setJobInfo  )}} ></Input>
+        <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateJobInfoObject('endDate', element, jobInfo, setJobInfo )}} ></Input>
+        <TextArea labelDesc={'job description'} onChange={(element) => { updateJobInfoObject('description', element, jobInfo, setJobInfo )}} ></TextArea>
+        <div className='inputs-buttons'>
+          <button type='button' onClick={() => { 
+            setToggleWorkExperienceInputs(true); 
+            setToggleJobList(true); 
+            setJobInfo({...degreeInfo, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' }) 
+            }
+          }>Cancel</button>
+          <button type='button' onClick={() => { handleJobSubmit(jobInfo, setJobInfo, workExperience, setWorkExperience, setToggleWorkExperienceInputs) }}>Submit</button>
+        </div>
+      </>
+    } else if (inputsFor === 'editing') {
+      returnedWorkInputsHTML = <>
+        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateWorkExperience('companyName', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
+        <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateWorkExperience('positionTitle', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
+        <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateWorkExperience('startDate', element, updatedJobInfo, setUpdatedJobInfo, id  )}} ></Input>
+        <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateWorkExperience('endDate', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
+        <TextArea labelDesc={'job description'} onChange={(element) => { updateWorkExperience('description', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></TextArea>
+        <button type='button' onClick={() => { handleJobUpdate(updatedJobInfo, setUpdatedJobInfo, workExperience, setWorkExperience, id, setToggleJobList )}}>Save</button>
+      </>
+    }
+    return (
+      returnedWorkInputsHTML
+    )
+  }
 
 
   return (
@@ -71,11 +112,15 @@ function App() {
         </section>
         <section id='practical-experience'>
           <h2>Work Experience</h2>
-          <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateStateObj('companyName', element, personalInformation, setpersonalInformation  )}} ></Input>
-          <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateStateObj('positionTitle', element, personalInformation, setpersonalInformation  )}} ></Input>
-          <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateStateObj('startDate', element, personalInformation, setpersonalInformation  )}} ></Input>
-          <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateStateObj('endDate', element, personalInformation, setpersonalInformation  )}} ></Input>
-          <TextArea labelDesc={'job description'} onChange={(element) => { updateStateObj('description', element, personalInformation, setpersonalInformation  )}} ></TextArea>
+
+          {( Array.isArray(workExperience) && workExperience.length > 0  ) && 
+          <Jobs workExperience={workExperience} setWorkExperience={setWorkExperience} click={workInputs} toggleWorkExperienceInputs={setToggleWorkExperienceInputs} 
+          toggleJobList={toggleJobList} setToggleJobList={setToggleJobList}></Jobs>}
+
+          {(toggleWorkExperienceInputs && toggleJobList) && 
+          <button type='button' onClick={() => setToggleWorkExperienceInputs(false)}>Add a Job</button>}
+          
+          {!toggleWorkExperienceInputs && workInputs('submitting')}
         </section>
       </form>
       <section id='cv-preview'>
@@ -88,16 +133,11 @@ function App() {
           </div>
           <div className='cv-body'>
             <h2>Education</h2>
-            {education !== '' &&<CvPreviewDegreeList education={education}></CvPreviewDegreeList>}
+            {education !== '' && <CvPreviewDegreeList education={education}></CvPreviewDegreeList>}
           </div>
           <div className='cv-footer'>
             <h2>Work Experience</h2>
-            <ul className='job'>
-              <li className='job-tenure'>{personalInformation.startDate + ' ' +  '-' + ' ' + personalInformation.endDate}</li>
-              <li className='position'><b>{personalInformation.positionTitle}</b></li>
-              <li className='company'><i>{personalInformation.companyName}</i></li>
-              <li className='description'><div>{personalInformation.description}</div></li>
-            </ul>
+            {workExperience !== '' && <CvPreviewJobList workExperience={workExperience}></CvPreviewJobList>}
           </div>
         </div>
       </section>
@@ -232,7 +272,7 @@ function updateEducation(property, element, updatedDegreeInfo, setUpdatedDegreeI
   }
 }
 
-function handleEductionUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList) {
+function handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList) {
   if (Object.values(updatedDegreeInfo).includes('')) return
   let educationCopy = education
   let degree = null
