@@ -1,30 +1,51 @@
 import { useState } from 'react'
 import './App.css'
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 function App() {
-  /* Use state here to update cv preview with the inputted info from inputs 
-    pass setState through inputs for the state to update on next render
-  */
 
-  const [personalInformation, setpersonalInformation] =  useState({
-    fullName: '', email: '', phoneNumber: '', 
-    companyName: '', positionTitle: '', startDate: '', endDate: '', 
-    description: ''
-  })
+  const [personalInformation, setpersonalInformation] =  useState({fullName: '', email: '', phoneNumber: ''})
 
-  const [studyInfo, setStudyInfo] = useState({id: 0, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
+  const [degreeInfo, setDegreeInfo] = useState({id: 0, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
+  const [updatedDegreeInfo, setUpdatedDegreeInfo] = useState({schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
   const [education, setEducation] = useState('')
-  const [toggleEducationInputs, setToggleEducationInputs] = useState(false)
-  // const [workExperience, setWorkExperience] = useState([])
+  const [toggleEducationInputs, setToggleEducationInputs] = useState(true)
+  const [toggleDegreeList, setToggleDegreeList] = useState(true)
 
-  const EducationInputs = <>
-    <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateEducationObj('studyTitle', element, studyInfo, setStudyInfo  )}} ></Input>
-    <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateEducationObj('schoolName', element, studyInfo, setStudyInfo )}} ></Input>
-    <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateEducationObj('studyStartDate', element, studyInfo, setStudyInfo  )}} ></Input>
-    <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateEducationObj('studyEndDate', element, studyInfo, setStudyInfo  )}} ></Input>
-    <button type='button' onClick={() => { handleEductionSubmit(studyInfo, setStudyInfo, education, setEducation, setToggleEducationInputs) }}>Submit</button>
-  </>
+  const [jobInfo, setJobInfo] = useState({id: 0, companyName: '', positionTitle: '', startDate: '', endDate: '', description: ''})
+  const [workExperience, setWorkExperience] = useState('')
+
+  function educationInputs(inputsFor, id) {
+    let returnedInputsHTML = ''
+    if (inputsFor === 'submitting') {
+      returnedInputsHTML = <>
+        <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateDegreeInfoObject('studyTitle', element, degreeInfo, setDegreeInfo  )}} ></Input>
+        <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateDegreeInfoObject('schoolName', element, degreeInfo, setDegreeInfo )}} ></Input>
+        <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateDegreeInfoObject('studyStartDate', element, degreeInfo, setDegreeInfo  )}} ></Input>
+        <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateDegreeInfoObject('studyEndDate', element, degreeInfo, setDegreeInfo  )}} ></Input>
+        <div className='inputs-buttons'>
+          <button type='button' onClick={() => { 
+            setToggleEducationInputs(true); 
+            setToggleDegreeList(true); 
+            setDegreeInfo({...degreeInfo, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' }) 
+            }
+          }>Cancel</button>
+          <button type='button' onClick={() => { handleDegreeSubmit(degreeInfo, setDegreeInfo, education, setEducation, setToggleEducationInputs) }}>Submit</button>
+        </div>
+      </>
+    } else if (inputsFor === 'editing') {
+      returnedInputsHTML = <>
+        <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateEducation('studyTitle', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
+        <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateEducation('schoolName', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
+        <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateEducation('studyStartDate', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
+        <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateEducation('studyEndDate', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
+        <button type='button' onClick={() => { handleEductionUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList )}}>Save</button>
+      </>
+    }
+    return (
+      returnedInputsHTML
+    )
+  } 
 
 
   return (
@@ -38,8 +59,15 @@ function App() {
         </section>
         <section id='educational-experience'>
           <h2>Education</h2>
-          {( Array.isArray(education) && education.length > 0  ) && <Degrees education={education}></Degrees>}
-          {toggleEducationInputs ? <button type='button' onClick={() => {setToggleEducationInputs(false)}}>Add education study</button> : EducationInputs}
+
+          {( Array.isArray(education) && education.length > 0  ) && 
+          <Degrees education={education} setEducation={setEducation} click={educationInputs} toggleEducationInputs={setToggleEducationInputs} 
+          toggleDegreeList={toggleDegreeList} setToggleDegreeList={setToggleDegreeList}></Degrees>}
+
+          {(toggleEducationInputs && toggleDegreeList) && 
+          <button type='button' onClick={() => setToggleEducationInputs(false)}>Add education study</button>}
+          
+          {!toggleEducationInputs && educationInputs('submitting')}
         </section>
         <section id='practical-experience'>
           <h2>Work Experience</h2>
@@ -60,11 +88,7 @@ function App() {
           </div>
           <div className='cv-body'>
             <h2>Education</h2>
-            <ul className='study'>
-              <li className='study-time'>{studyInfo.studyStartDate + ' ' +  '-' + ' ' + studyInfo.studyEndDate}</li>
-              <li className='title'>{studyInfo.studyTitle}</li>
-              <li className='school'><i>{studyInfo.schoolName}</i></li>
-            </ul>
+            {education !== '' &&<CvPreviewDegreeList education={education}></CvPreviewDegreeList>}
           </div>
           <div className='cv-footer'>
             <h2>Work Experience</h2>
@@ -80,6 +104,8 @@ function App() {
     </main>
   )
 }
+
+/* */
 
 function Input({labelDesc, type, onChange}) {
   let desc = labelDesc.split(' ').join('-')
@@ -105,21 +131,67 @@ function TextArea({labelDesc, onChange}) {
   )
 }
 
-function Degrees(education) {
-  let degrees = education.education
+function Degrees(props) {
+  const [currentDegreeBeingEdited, setCurrentDegreeBeingEdited] = useState(new Set())
+  let degrees = props.education
+  let degreeBeingEdited = [...currentDegreeBeingEdited][0]  
+   
+  return (
+    props.toggleDegreeList ?
+    <ul className='degree-list'>
+      {degrees.map((degree) => {
+        return ( 
+          <li className='degree-list-item' key={ degree.id }>
+            <span>{degree.studyTitle}</span>
+            <button type='button' onClick={() => {
+                  setCurrentDegreeBeingEdited(new Set([degree]));
+                  props.setToggleDegreeList(false)
+              }}>edit</button>
+            <button type='button' onClick={() => {
+                props.setEducation(degrees.filter((value) => value !== degree))
+              }
+            }>delete</button>
+          </li> 
+        )
+      })}
+    </ul> :
+    <>
+      {props.click('editing', degreeBeingEdited.id)}
+      <button type='button' onClick={() => {
+        setCurrentDegreeBeingEdited(new Set())
+        props.setToggleDegreeList(true)
+      }}>Cancel</button>
+    </>
+  )
+}
+
+function CvPreviewDegreeList(props) {
+  let degrees = props.education
   return (
     <>
       {degrees.map((degree) => {
-        return (
-        <div key={degree.id}>
-          {degree.studyTitle}
-          <button type='button'>edit</button>
-          <button type='button'>delete</button>
-        </div>
+        return ( 
+          <ul className='cv-preview-degree' key={ degree.id }>
+              <li className='cv-preview-study-time'>{degree.studyStartDate} <div>{'-' + ' ' + degree.studyEndDate}</div></li>
+              <li className='cv-preview-title'>{degree.studyTitle}</li>
+              <li className='cv-preview-school'><i>{degree.schoolName}</i></li>
+          </ul> 
         )
       })}
-    </>
+    </> 
   )
+}
+
+function handleDegreeSubmit(degreeInfo, setDegreeInfo, education, setEducation, setToggleEducationInputs) {
+  if (Object.values(degreeInfo).includes('')) return
+  if (Array.isArray(education)) {
+    setEducation([...education, degreeInfo])
+  } else {
+    setEducation([degreeInfo])
+  }
+  setToggleEducationInputs(true)
+  let newId = degreeInfo.id + 1
+  setDegreeInfo({id: newId, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
 }
 
 function capitalize(labelDesc) {
@@ -142,30 +214,39 @@ function updateStateObj(property, element, personalInformation, setpersonalInfor
   }
 }
 
-function updateEducationObj(property, element, studyInfo, setStudyInfo) {
+function updateDegreeInfoObject(property, element, degreeInfo, setDegreeInfo) {
   if (property.endsWith('Date')) {
     let date = formatDate(element.target.value)
-    setStudyInfo({...studyInfo, [[property]]: date })
+    setDegreeInfo({...degreeInfo, [[property]]: date })
   } else {
-    setStudyInfo({...studyInfo, [[property]]: element.target.value})
+    setDegreeInfo({...degreeInfo, [[property]]: element.target.value})
   }
-  // console.log(studyInfo)
 }
 
-function handleEductionSubmit(studyInfo, setStudyInfo, education, setEducation, setToggleEducationInputs) {
-  if (Object.values(studyInfo).includes('')) return
-  if (Array.isArray(education)) {
-    setEducation([...education, studyInfo])
+function updateEducation(property, element, updatedDegreeInfo, setUpdatedDegreeInfo, id) {
+  if (property.endsWith('Date')) {
+    let date = formatDate(element.target.value)
+    setUpdatedDegreeInfo({...updatedDegreeInfo, id: id, [[property]]: date })
   } else {
-    setEducation([studyInfo])
+    setUpdatedDegreeInfo({...updatedDegreeInfo, id: id, [[property]]: element.target.value})
   }
-  setToggleEducationInputs(true)
-  let newId = studyInfo.id + 1
-  setStudyInfo({id: newId, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
-  // console.log(education)
 }
 
-
+function handleEductionUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList) {
+  if (Object.values(updatedDegreeInfo).includes('')) return
+  let educationCopy = education
+  let degree = null
+  educationCopy.forEach((educationObj) => {
+    if (educationObj.id === id) {
+      degree = educationObj
+    }
+  })
+  let index = educationCopy.indexOf(degree)
+  educationCopy.splice(index, 1, updatedDegreeInfo)
+  setEducation([...educationCopy])
+  setUpdatedDegreeInfo({id: id, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
+  setToggleDegreeList(true)
+}
 
 
 export default App
