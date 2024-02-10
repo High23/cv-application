@@ -36,7 +36,6 @@ section > input, #educational-experience > div > input {
     display: grid;
     align-items: center;
     grid-template-columns: auto 1fr;
-    padding: 0px 15px 0px 10px;
 }
 
 section > input:hover {
@@ -45,7 +44,6 @@ section > input:hover {
 
 textarea {
     resize: none;
-    max-width: 270px;
 }
 
 .cv-header {
@@ -161,7 +159,7 @@ form {
     display: grid;
     grid-template-columns: auto auto;
     justify-content: end;
-    gap: 10px;
+    gap: 8px;
 }
 
 
@@ -274,6 +272,10 @@ img[src='src/assets/plus.svg'] {
     gap: 10px;
 }
 
+section > label {
+    padding-bottom: 3px;
+}
+
 @media (max-width: 1000px) {
     .pfp-and-name > span {
         font-size: 2.1rem;
@@ -339,7 +341,7 @@ img[src='src/assets/plus.svg'] {
     }
 }
 
-@media (min-width: 600px) and (max-width: 770px) {
+@media (max-width: 770px) {
     .pfp-and-name, .phone-and-email {
         flex-direction: column;
         align-items: center;
@@ -370,5 +372,47 @@ img[src='src/assets/plus.svg'] {
     .cv-preview-study-time, .job-tenure {
         font-size: 13px;
         padding: 14px 14px 0px;
+    }
+}
+
+@media (max-width: 600px) {
+    main {
+        flex-direction: column;
+    }
+
+    section > label {
+        font-size: 16px;
+    }
+
+    section > input {
+        font-size: 14px;
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    .form-h2-icon {
+        width: 25px;
+    }
+
+    .degree-list-item > span, .job-list-item > span {
+        font-size: 16px;
+    }
+
+    #educational-experience, #work-experience {
+        padding: 10px 22px 35px;
+    }
+
+    .company, .cv-preview-school {
+        font-size: 15px;
+    }
+
+    .description {
+        font-size: 13px;
+    }
+
+    form > section > h2 {
+        margin-bottom: 14px;
     }
 }
