@@ -6,10 +6,6 @@
     background-color: white;
 }
 
-#cv-preview > div {
-    position: sticky;
-    top: 0;
-}
 
 form, form > section, #cv-preview {
     display: grid;
@@ -103,7 +99,7 @@ section > div > h2 {
 }
 
 .cv-preview-study-time, .job-tenure {
-    padding: 16px 20px;
+    padding: 16px 20px 0px;
     list-style-type: none;
 }
 
@@ -192,7 +188,8 @@ form {
 
 .cv-body > h2, .cv-footer > h2 {
     background-color: rgb(116 189 231 / 17%);
-    margin-bottom: 0;
+    margin: 0;
+    padding: 10px 0px;
     text-align: center;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -275,4 +272,103 @@ img[src='src/assets/plus.svg'] {
     align-items: center;
     justify-content: center;
     gap: 10px;
+}
+
+@media (max-width: 1000px) {
+    .pfp-and-name > span {
+        font-size: 2.1rem;
+    }
+
+    .pfp-and-name > img {
+        width: 80px;
+    }
+
+    .cv-header {
+        padding: 25px;
+    }
+
+    .phone-and-email {
+        gap: 12px;
+        
+    }
+
+    .phone-and-email > span {
+        font-size: 14px;
+        gap: 5px;
+    }
+
+    .header-icon {
+        width: 16px;
+    }
+
+    .cv-preview-study-time, .job-tenure {
+        font-size: 14px;
+        padding: 14px 16px 0px;
+    }
+
+    .position, .cv-preview-title {
+        font-size: 1rem;
+    }
+
+    .company, .cv-preview-school {
+        font-size: 14px;
+    }
+    
+    .description {
+        font-size: 12px;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
+    section > label {
+        font-size: 15px;
+    }
+
+    section > input {
+        font-size: 13px;
+    }
+
+    .degree-list-item > span, .job-list-item > span {
+        font-size: 14px;
+    }
+
+    .cv-body, .cv-footer {
+        margin: 0px 25px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 770px) {
+    .pfp-and-name, .phone-and-email {
+        flex-direction: column;
+        align-items: center;
+        gap: 0px;
+    }
+
+    .pfp-and-name > span {
+        padding: 0;
+        text-align: center;
+    }
+
+    .phone-and-email {
+        gap: 4px;
+    }
+
+    .cv-header {
+        row-gap: 6px;
+    }
+
+    .cv-preview-degree, .job {
+        column-gap: 22px;
+    }
+
+    .description {
+        margin-left: 22px;
+    }
+
+    .cv-preview-study-time, .job-tenure {
+        font-size: 13px;
+        padding: 14px 14px 0px;
+    }
 }
