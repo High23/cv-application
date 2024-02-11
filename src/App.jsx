@@ -42,10 +42,10 @@ function App() {
       </>
     } else if (inputsFor === 'editing') {
       returnedEducationInputsHTML = <>
-        <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateEducation('studyTitle', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
-        <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateEducation('schoolName', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
-        <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateEducation('studyStartDate', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
-        <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateEducation('studyEndDate', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
+        <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateEducation('studyTitle', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
+        <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateEducation('schoolName', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
+        <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateEducation('studyStartDate', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
+        <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateEducation('studyEndDate', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
         <div className="input-buttons">
           <button className='cancel-button' type='button' onClick={() => {
             setCurrentDegreeBeingEdited(new Set())
@@ -81,11 +81,11 @@ function App() {
       </>
     } else if (inputsFor === 'editing') {
       returnedWorkInputsHTML = <>
-        <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateWorkExperience('positionTitle', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
-        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateWorkExperience('companyName', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
-        <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateWorkExperience('startDate', element, updatedJobInfo, setUpdatedJobInfo, id  )}} ></Input>
-        <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateWorkExperience('endDate', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
-        <TextArea labelDesc={'job description'} onChange={(element) => { updateWorkExperience('description', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></TextArea>
+        <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateWorkExperience('positionTitle', element, updatedJobInfo, setUpdatedJobInfo )}} ></Input>
+        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateWorkExperience('companyName', element, updatedJobInfo, setUpdatedJobInfo)}} ></Input>
+        <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateWorkExperience('startDate', element, updatedJobInfo, setUpdatedJobInfo)}} ></Input>
+        <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateWorkExperience('endDate', element, updatedJobInfo, setUpdatedJobInfo)}} ></Input>
+        <TextArea labelDesc={'job description'} onChange={(element) => { updateWorkExperience('description', element, updatedJobInfo, setUpdatedJobInfo)}} ></TextArea>
         <div className="input-buttons">
           <button className='cancel-button' type='button' onClick={() => {
               setCurrentJobBeingEdited(new Set())
@@ -189,8 +189,9 @@ function TextArea({labelDesc, onChange}) {
 function Degrees(props) {
   const [currentDegreeBeingEdited, setCurrentDegreeBeingEdited] = useState(new Set())
   let degrees = props.education
-  let degreeBeingEdited = [...currentDegreeBeingEdited][0]  
-   
+  let degreeBeingEdited = [...currentDegreeBeingEdited][0]
+  console.log(degrees)
+  console.log(degreeBeingEdited)
   return (
     props.toggleDegreeList ?
     <ul className='degree-list'>
@@ -199,11 +200,13 @@ function Degrees(props) {
           <li className='degree-list-item' key={ degree.id }>
             <span>{degree.studyTitle}</span>
             <div className="edit-and-delete-buttons">
-              <button aria-label='edit degree' className='edit' type='button' onClick={() => {
+              <button aria-label='edit-degree' className='edit' type='button' onClick={() => {
                     setCurrentDegreeBeingEdited(new Set([degree]));
                     props.setToggleDegreeList(false)
+                    console.log(degree)
+                    console.log(currentDegreeBeingEdited)
                 }}></button>
-              <button aria-label='delete degree' className='delete' type='button' onClick={() => {
+              <button aria-label='delete-degree' className='delete' type='button' onClick={() => {
                   props.setEducation(degrees.filter((value) => value !== degree))
                 }
               }></button>
@@ -276,17 +279,17 @@ function updateDegreeInfoObject(property, element, degreeInfo, setDegreeInfo) {
   }
 }
 
-function updateEducation(property, element, updatedDegreeInfo, setUpdatedDegreeInfo, id) {
+function updateEducation(property, element, updatedDegreeInfo, setUpdatedDegreeInfo) {
   if (property.endsWith('Date')) {
     let date = formatDate(element.target.value)
-    setUpdatedDegreeInfo({...updatedDegreeInfo, id: id, [[property]]: date })
+    setUpdatedDegreeInfo({...updatedDegreeInfo, [[property]]: date })
   } else {
-    setUpdatedDegreeInfo({...updatedDegreeInfo, id: id, [[property]]: element.target.value})
+    setUpdatedDegreeInfo({...updatedDegreeInfo, [[property]]: element.target.value})
   }
 }
 
 function handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList) {
-  let propertiesWithValues = Object.keys(updatedDegreeInfo).filter((value) => (updatedDegreeInfo[[value]] !== '' && value !== 'id'))
+  let propertiesWithValues = Object.keys(updatedDegreeInfo).filter((value) => updatedDegreeInfo[[value]] !== '')
   if (propertiesWithValues.length === 0) return
   let educationCopy = education
   let degree = null
@@ -295,14 +298,13 @@ function handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, educatio
       degree = educationObj
     }
   })
+  let index = educationCopy.indexOf(degree)
   propertiesWithValues.forEach((property) => {
     degree = {...degree, [[property]]: updatedDegreeInfo[[property]]}
   })
-  let index = educationCopy.indexOf(degree)
-  console.log(degree)
   educationCopy.splice(index, 1, degree)
-  setEducation([...educationCopy])
-  setUpdatedDegreeInfo({id: id, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
+  setEducation(educationCopy)
+  setUpdatedDegreeInfo({schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
   setToggleDegreeList(true)
 }
 

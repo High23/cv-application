@@ -16,24 +16,22 @@ function Jobs(props) {
             return ( 
             <li className='job-list-item' key={ job.id }>
                 <span>{job.positionTitle}</span>
-                <button type='button' onClick={() => {
-                    setCurrentJobBeingEdited(new Set([job]));
-                    props.setToggleJobList(false)
-                }}>edit</button>
-                <button type='button' onClick={() => {
-                    props.setWorkExperience(jobs.filter((value) => value !== job))
-                }
-                }>delete</button>
+                <div className="edit-and-delete-buttons">
+                    <button aria-label='edit degree' className='edit' type='button' onClick={() => {
+                        setCurrentJobBeingEdited(new Set([job]));
+                        props.setToggleJobList(false)
+                    }}></button>
+                    <button aria-label='delete degree' className='delete' type='button' onClick={() => {
+                        props.setWorkExperience(jobs.filter((value) => value !== job))
+                    }
+                    }></button>
+                </div>
             </li> 
             )
         })}
         </ul> :
         <>
-        {props.click('editing', jobBeingEdited.id)}
-        <button type='button' onClick={() => {
-            setCurrentJobBeingEdited(new Set())
-            props.setToggleJobList(true)
-        }}>Cancel</button>
+        {props.click('editing', jobBeingEdited.id, setCurrentJobBeingEdited)}
         </>
     )
 }
@@ -45,7 +43,7 @@ function CvPreviewJobList(props) {
         {jobs.map((job) => {
             return ( 
             <ul className='job' key={ job.id }>
-                <li className='job-tenure'>{job.startDate + ' ' +  '-' + ' ' + job.endDate}</li>
+                <li className='job-tenure'>{job.startDate} <div>{'-'  + job.endDate}</div></li>
                 <li className='position'><b>{job.positionTitle}</b></li>
                 <li className='company'><i>{job.companyName}</i></li>
                 <li className='description'><div>{job.description}</div></li>
@@ -57,7 +55,16 @@ function CvPreviewJobList(props) {
 }
 
 function handleJobSubmit(jobInfo, setJobInfo, workExperience, setWorkExperience, setToggleEducationInputs) {
-    if (Object.values(jobInfo).includes('')) return
+    let requiredFields = Object.keys(jobInfo).filter((property) => property !== 'description')
+    for (let i = 0; i < requiredFields.length; i++) {
+        let prop = requiredFields[i]
+        if (jobInfo[[prop]] !== '') {
+            continue;
+        } else {
+            return
+        }
+    }
+    if (requiredFields.includes('')) requiredFields
     if (Array.isArray(workExperience)) {
         setWorkExperience([...workExperience, jobInfo])
     } else {
@@ -77,17 +84,18 @@ function updateJobInfoObject(property, element, jobInfo, setJobInfo) {
     }
 }
 
-function updateWorkExperience(property, element, updatedJobInfo, setUpdatedJobInfo, id) {
+function updateWorkExperience(property, element, updatedJobInfo, setUpdatedJobInfo) {
     if (property.endsWith('Date')) {
         let date = formatDate(element.target.value)
-        setUpdatedJobInfo({...updatedJobInfo, id: id, [[property]]: date })
+        setUpdatedJobInfo({...updatedJobInfo, [[property]]: date })
     } else {
-        setUpdatedJobInfo({...updatedJobInfo, id: id, [[property]]: element.target.value})
+        setUpdatedJobInfo({...updatedJobInfo, [[property]]: element.target.value})
     }
 }
 
 function handleJobUpdate(updatedJobInfo, setUpdatedJobInfo, workExperience, setWorkExperience, id, setToggleJobList) {
-    if (Object.values(updatedJobInfo).includes('')) return
+    let propertiesWithValues = Object.keys(updatedJobInfo).filter((value) => updatedJobInfo[[value]] !== '' )
+    if (propertiesWithValues.length === 0) return
     let workExperienceCopy = workExperience
     let job = null
     workExperienceCopy.forEach((jobObj) => {
@@ -96,8 +104,11 @@ function handleJobUpdate(updatedJobInfo, setUpdatedJobInfo, workExperience, setW
         }
     })
     let index = workExperienceCopy.indexOf(job)
-    workExperienceCopy.splice(index, 1, updatedJobInfo)
+    propertiesWithValues.forEach((property) => {
+        job = {...job, [[property]]: updatedJobInfo[[property]]}
+    })
+    workExperienceCopy.splice(index, 1, job)
     setWorkExperience([...workExperienceCopy])
-    setUpdatedJobInfo({id: id, companyName: '', positionTitle: '', startDate: '', endDate: '', description: '' })
+    setUpdatedJobInfo({companyName: '', positionTitle: '', startDate: '', endDate: '', description: '' })
     setToggleJobList(true)
 }
