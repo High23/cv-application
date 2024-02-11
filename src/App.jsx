@@ -26,8 +26,8 @@ function App() {
     let returnedEducationInputsHTML = ''
     if (inputsFor === 'submitting') {
       returnedEducationInputsHTML = <>
-        <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateDegreeInfoObject('studyTitle', element, degreeInfo, setDegreeInfo  )}} ></Input>
-        <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateDegreeInfoObject('schoolName', element, degreeInfo, setDegreeInfo )}} ></Input>
+        <Input placeHolder={'Business and Management, BA (Hons)'} labelDesc={'title of study'} type={'text'} onChange={(element) => { updateDegreeInfoObject('studyTitle', element, degreeInfo, setDegreeInfo  )}} ></Input>
+        <Input placeHolder={'University of Creative Arts, Epsom'} labelDesc={'school name'} type={'text'} onChange={(element) => { updateDegreeInfoObject('schoolName', element, degreeInfo, setDegreeInfo )}} ></Input>
         <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateDegreeInfoObject('studyStartDate', element, degreeInfo, setDegreeInfo  )}} ></Input>
         <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateDegreeInfoObject('studyEndDate', element, degreeInfo, setDegreeInfo  )}} ></Input>
         <div className='input-buttons'>
@@ -42,8 +42,8 @@ function App() {
       </>
     } else if (inputsFor === 'editing') {
       returnedEducationInputsHTML = <>
-        <Input labelDesc={'title of study'} type={'text'} onChange={(element) => { updateEducation('studyTitle', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
-        <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateEducation('schoolName', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
+        <Input placeHolder={'Business and Management, BA (Hons)'} labelDesc={'title of study'} type={'text'} onChange={(element) => { updateEducation('studyTitle', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
+        <Input placeHolder={'University of Creative Arts, Epsom'} labelDesc={'school name'} type={'text'} onChange={(element) => { updateEducation('schoolName', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
         <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateEducation('studyStartDate', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
         <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateEducation('studyEndDate', element, updatedDegreeInfo, setUpdatedDegreeInfo)}} ></Input>
         <div className="input-buttons">
@@ -64,8 +64,8 @@ function App() {
     let returnedWorkInputsHTML = ''
     if (inputsFor === 'submitting') {
       returnedWorkInputsHTML = <>
-        <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateJobInfoObject('positionTitle', element, jobInfo, setJobInfo )}} ></Input>
-        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateJobInfoObject('companyName', element, jobInfo, setJobInfo )}} ></Input>
+        <Input placeHolder={'Customer Service Specialist'} labelDesc={'position title'} type={'text'} onChange={(element) => { updateJobInfoObject('positionTitle', element, jobInfo, setJobInfo )}} ></Input>
+        <Input placeHolder={'AdviseOwl, Redcar'} labelDesc={'company name'} type={'text'} onChange={(element) => { updateJobInfoObject('companyName', element, jobInfo, setJobInfo )}} ></Input>
         <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateJobInfoObject('startDate', element, jobInfo, setJobInfo  )}} ></Input>
         <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateJobInfoObject('endDate', element, jobInfo, setJobInfo )}} ></Input>
         <TextArea labelDesc={'job description'} onChange={(element) => { updateJobInfoObject('description', element, jobInfo, setJobInfo )}} ></TextArea>
@@ -81,8 +81,8 @@ function App() {
       </>
     } else if (inputsFor === 'editing') {
       returnedWorkInputsHTML = <>
-        <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateWorkExperience('positionTitle', element, updatedJobInfo, setUpdatedJobInfo )}} ></Input>
-        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateWorkExperience('companyName', element, updatedJobInfo, setUpdatedJobInfo)}} ></Input>
+        <Input placeHolder={'Customer Service Specialist'} labelDesc={'position title'} type={'text'} onChange={(element) => { updateWorkExperience('positionTitle', element, updatedJobInfo, setUpdatedJobInfo )}} ></Input>
+        <Input placeHolder={'AdviseOwl, Redcar'} labelDesc={'company name'} type={'text'} onChange={(element) => { updateWorkExperience('companyName', element, updatedJobInfo, setUpdatedJobInfo)}} ></Input>
         <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateWorkExperience('startDate', element, updatedJobInfo, setUpdatedJobInfo)}} ></Input>
         <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateWorkExperience('endDate', element, updatedJobInfo, setUpdatedJobInfo)}} ></Input>
         <TextArea labelDesc={'job description'} onChange={(element) => { updateWorkExperience('description', element, updatedJobInfo, setUpdatedJobInfo)}} ></TextArea>
@@ -106,9 +106,9 @@ function App() {
       <form action="/">
         <section id='general-information'>
           <h2><img className='form-h2-icon' src='src/assets/account-details.svg'></img>Personal Information</h2>
-          <Input labelDesc={'full name'} type={'text'} onChange={(element) => { updateStateObj('fullName', element, personalInformation, setpersonalInformation )}} ></Input>
-          <Input labelDesc={'email'} type={'email'} onChange={(element) => { updateStateObj('email', element, personalInformation, setpersonalInformation )}} ></Input>
-          <Input labelDesc={'phone number'} type={'tel'} onChange={(element) => { updateStateObj('phoneNumber', element, personalInformation, setpersonalInformation )}} ></Input>
+          <Input placeHolder={'James White'} labelDesc={'full name'} type={'text'} onChange={(element) => { updateStateObj('fullName', element, personalInformation, setpersonalInformation )}} ></Input>
+          <Input placeHolder={'notarealemail123@gmail.com'} labelDesc={'email'} type={'email'} onChange={(element) => { updateStateObj('email', element, personalInformation, setpersonalInformation )}} ></Input>
+          <Input placeHolder={'555-555-5555'} labelDesc={'phone number'} type={'tel'} onChange={(element) => { updateStateObj('phoneNumber', element, personalInformation, setpersonalInformation )}} ></Input>
         </section>
         <section id='educational-experience'>
           <h2><img className='form-h2-icon' src='src/assets/school.svg'></img>Education</h2>
@@ -161,16 +161,14 @@ function App() {
   )
 }
 
-/* */
-
-function Input({labelDesc, type, onChange}) {
+function Input({placeHolder, labelDesc, type, onChange}) {
   let desc = labelDesc.split(' ').join('-')
   labelDesc = capitalize(labelDesc)
 
   return (
     <>
       <label htmlFor={desc}>{labelDesc} </label>
-      <input type={type} name={desc} id={desc} onChange={onChange}/>
+      <input type={type} name={desc} id={desc} onChange={onChange} placeholder={placeHolder} maxLength={75}/>
     </>
   )
 }
@@ -182,10 +180,11 @@ function TextArea({labelDesc, onChange}) {
   return (
     <>
       <label htmlFor={desc}>{labelDesc} </label>
-      <textarea id={desc} cols='30' rows='10' onChange={onChange}></textarea>
+      <textarea id={desc} cols='30' rows='10' onChange={onChange} ></textarea>
     </>
   )
 }
+
 function Degrees(props) {
   const [currentDegreeBeingEdited, setCurrentDegreeBeingEdited] = useState(new Set())
   let degrees = props.education
@@ -307,6 +306,5 @@ function handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, educatio
   setUpdatedDegreeInfo({schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
   setToggleDegreeList(true)
 }
-
 
 export default App
