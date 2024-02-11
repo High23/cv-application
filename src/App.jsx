@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import {Jobs, CvPreviewJobList, handleJobSubmit, 
   updateJobInfoObject, updateWorkExperience, handleJobUpdate} from './work'
 
@@ -22,7 +22,7 @@ function App() {
   const [toggleWorkExperienceInputs, setToggleWorkExperienceInputs] = useState(true)
   const [toggleJobList, setToggleJobList] = useState(true)
 
-  function educationInputs(inputsFor, id) {
+  function educationInputs(inputsFor, id, setCurrentDegreeBeingEdited) {
     let returnedEducationInputsHTML = ''
     if (inputsFor === 'submitting') {
       returnedEducationInputsHTML = <>
@@ -30,14 +30,14 @@ function App() {
         <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateDegreeInfoObject('schoolName', element, degreeInfo, setDegreeInfo )}} ></Input>
         <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateDegreeInfoObject('studyStartDate', element, degreeInfo, setDegreeInfo  )}} ></Input>
         <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateDegreeInfoObject('studyEndDate', element, degreeInfo, setDegreeInfo  )}} ></Input>
-        <div className='inputs-buttons'>
-          <button type='button' onClick={() => { 
+        <div className='input-buttons'>
+          <button className='cancel-button' type='button' onClick={() => { 
             setToggleEducationInputs(true); 
             setToggleDegreeList(true); 
             setDegreeInfo({...degreeInfo, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' }) 
             }
           }>Cancel</button>
-          <button type='button' onClick={() => { handleDegreeSubmit(degreeInfo, setDegreeInfo, education, setEducation, setToggleEducationInputs) }}>Submit</button>
+          <button className='submit-button' type='button' onClick={() => { handleDegreeSubmit(degreeInfo, setDegreeInfo, education, setEducation, setToggleEducationInputs) }}>Submit</button>
         </div>
       </>
     } else if (inputsFor === 'editing') {
@@ -46,7 +46,13 @@ function App() {
         <Input labelDesc={'school name'} type={'text'} onChange={(element) => { updateEducation('schoolName', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
         <Input labelDesc={'study start date'} type={'date'} onChange={(element) => { updateEducation('studyStartDate', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
         <Input labelDesc={'study end date'} type={'date'} onChange={(element) => { updateEducation('studyEndDate', element, updatedDegreeInfo, setUpdatedDegreeInfo, id )}} ></Input>
-        <button type='button' onClick={() => { handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList )}}>Save</button>
+        <div className="input-buttons">
+          <button className='cancel-button' type='button' onClick={() => {
+            setCurrentDegreeBeingEdited(new Set())
+            setToggleDegreeList(true)
+          }}>Cancel Edit</button>
+          <button className='submit-button' type='button' onClick={() => { handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList )}}>Save Changes</button>
+        </div>
       </>
     }
     return (
@@ -54,33 +60,39 @@ function App() {
     )
   }
 
-  function workInputs(inputsFor, id) {
+  function workInputs(inputsFor, id, setCurrentJobBeingEdited) {
     let returnedWorkInputsHTML = ''
     if (inputsFor === 'submitting') {
       returnedWorkInputsHTML = <>
-        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateJobInfoObject('companyName', element, jobInfo, setJobInfo )}} ></Input>
         <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateJobInfoObject('positionTitle', element, jobInfo, setJobInfo )}} ></Input>
+        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateJobInfoObject('companyName', element, jobInfo, setJobInfo )}} ></Input>
         <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateJobInfoObject('startDate', element, jobInfo, setJobInfo  )}} ></Input>
         <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateJobInfoObject('endDate', element, jobInfo, setJobInfo )}} ></Input>
         <TextArea labelDesc={'job description'} onChange={(element) => { updateJobInfoObject('description', element, jobInfo, setJobInfo )}} ></TextArea>
-        <div className='inputs-buttons'>
-          <button type='button' onClick={() => { 
+        <div className='input-buttons'>
+          <button className='cancel-button' type='button' onClick={() => { 
             setToggleWorkExperienceInputs(true); 
             setToggleJobList(true); 
-            setJobInfo({...degreeInfo, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' }) 
+            setJobInfo({...jobInfo, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' }) 
             }
           }>Cancel</button>
-          <button type='button' onClick={() => { handleJobSubmit(jobInfo, setJobInfo, workExperience, setWorkExperience, setToggleWorkExperienceInputs) }}>Submit</button>
+          <button className='submit-button' type='button' onClick={() => { handleJobSubmit(jobInfo, setJobInfo, workExperience, setWorkExperience, setToggleWorkExperienceInputs) }}>Submit</button>
         </div>
       </>
     } else if (inputsFor === 'editing') {
       returnedWorkInputsHTML = <>
-        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateWorkExperience('companyName', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
         <Input labelDesc={'position title'} type={'text'} onChange={(element) => { updateWorkExperience('positionTitle', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
+        <Input labelDesc={'company name'} type={'text'} onChange={(element) => { updateWorkExperience('companyName', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
         <Input labelDesc={'start date'} type={'date'} onChange={(element) => { updateWorkExperience('startDate', element, updatedJobInfo, setUpdatedJobInfo, id  )}} ></Input>
         <Input labelDesc={'end date'} type={'date'} onChange={(element) => { updateWorkExperience('endDate', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></Input>
         <TextArea labelDesc={'job description'} onChange={(element) => { updateWorkExperience('description', element, updatedJobInfo, setUpdatedJobInfo, id )}} ></TextArea>
-        <button type='button' onClick={() => { handleJobUpdate(updatedJobInfo, setUpdatedJobInfo, workExperience, setWorkExperience, id, setToggleJobList )}}>Save</button>
+        <div className="input-buttons">
+          <button className='cancel-button' type='button' onClick={() => {
+              setCurrentJobBeingEdited(new Set())
+              setToggleJobList(true)
+          }}>Cancel Edit</button>
+          <button className='submit-button' type='button' onClick={() => { handleJobUpdate(updatedJobInfo, setUpdatedJobInfo, workExperience, setWorkExperience, id, setToggleJobList )}}>Save Changes</button>
+        </div>
       </>
     }
     return (
@@ -93,52 +105,56 @@ function App() {
     <main>
       <form action="/">
         <section id='general-information'>
-          <h2>Personal Information</h2>
+          <h2><img className='form-h2-icon' src='src/assets/account-details.svg'></img>Personal Information</h2>
           <Input labelDesc={'full name'} type={'text'} onChange={(element) => { updateStateObj('fullName', element, personalInformation, setpersonalInformation )}} ></Input>
           <Input labelDesc={'email'} type={'email'} onChange={(element) => { updateStateObj('email', element, personalInformation, setpersonalInformation )}} ></Input>
           <Input labelDesc={'phone number'} type={'tel'} onChange={(element) => { updateStateObj('phoneNumber', element, personalInformation, setpersonalInformation )}} ></Input>
         </section>
         <section id='educational-experience'>
-          <h2>Education</h2>
+          <h2><img className='form-h2-icon' src='src/assets/school.svg'></img>Education</h2>
 
           {( Array.isArray(education) && education.length > 0  ) && 
           <Degrees education={education} setEducation={setEducation} click={educationInputs} toggleEducationInputs={setToggleEducationInputs} 
           toggleDegreeList={toggleDegreeList} setToggleDegreeList={setToggleDegreeList}></Degrees>}
 
           {(toggleEducationInputs && toggleDegreeList) && 
-          <button type='button' onClick={() => setToggleEducationInputs(false)}>Add education study</button>}
+          <button className='add-button' type='button' onClick={() => setToggleEducationInputs(false)}><img src='src/assets/plus.svg'></img>Add Degree</button>}
           
           {!toggleEducationInputs && educationInputs('submitting')}
         </section>
-        <section id='practical-experience'>
-          <h2>Work Experience</h2>
+        <section id='work-experience'>
+          <h2><img className='form-h2-icon' src='src/assets/briefcase.svg'></img>Work Experience</h2>
 
           {( Array.isArray(workExperience) && workExperience.length > 0  ) && 
           <Jobs workExperience={workExperience} setWorkExperience={setWorkExperience} click={workInputs} toggleWorkExperienceInputs={setToggleWorkExperienceInputs} 
           toggleJobList={toggleJobList} setToggleJobList={setToggleJobList}></Jobs>}
 
           {(toggleWorkExperienceInputs && toggleJobList) && 
-          <button type='button' onClick={() => setToggleWorkExperienceInputs(false)}>Add a Job</button>}
+          <button className='add-button' type='button' onClick={() => setToggleWorkExperienceInputs(false)}><img src='src/assets/plus.svg'></img>Add Job</button>}
           
           {!toggleWorkExperienceInputs && workInputs('submitting')}
         </section>
       </form>
       <section id='cv-preview'>
         <div>
-          <div className='cv-header'>
-            <span>{personalInformation.fullName}</span>
-            <span>{personalInformation.email}</span>
-            <span>{personalInformation.phoneNumber}</span>
-            <img src="src/assets/account-circle.png" alt="" />
-          </div>
-          <div className='cv-body'>
+          <section className='cv-header'>
+            <div className="pfp-and-name">
+              <img src="src/assets/account-circle.svg" alt="" />
+              <span>{personalInformation.fullName}</span>
+            </div>
+            <div className='phone-and-email'>
+              <span><img className='header-icon' src='src/assets/email-outline.svg'></img>{personalInformation.email}</span>
+              <span><img className='header-icon' src='src/assets/phone.svg'></img>{personalInformation.phoneNumber}</span>
+            </div>
+          </section>
+          <section className='cv-body'>
             <h2>Education</h2>
             {education !== '' && <CvPreviewDegreeList education={education}></CvPreviewDegreeList>}
-          </div>
-          <div className='cv-footer'>
-            <h2>Work Experience</h2>
+          </section>
+          <section className='cv-footer'>
+            <h2>Work History</h2>
             {workExperience !== '' && <CvPreviewJobList workExperience={workExperience}></CvPreviewJobList>}
-          </div>
+          </section>
         </div>
       </section>
     </main>
@@ -170,7 +186,6 @@ function TextArea({labelDesc, onChange}) {
     </>
   )
 }
-
 function Degrees(props) {
   const [currentDegreeBeingEdited, setCurrentDegreeBeingEdited] = useState(new Set())
   let degrees = props.education
@@ -183,24 +198,22 @@ function Degrees(props) {
         return ( 
           <li className='degree-list-item' key={ degree.id }>
             <span>{degree.studyTitle}</span>
-            <button type='button' onClick={() => {
-                  setCurrentDegreeBeingEdited(new Set([degree]));
-                  props.setToggleDegreeList(false)
-              }}>edit</button>
-            <button type='button' onClick={() => {
-                props.setEducation(degrees.filter((value) => value !== degree))
-              }
-            }>delete</button>
+            <div className="edit-and-delete-buttons">
+              <button aria-label='edit degree' className='edit' type='button' onClick={() => {
+                    setCurrentDegreeBeingEdited(new Set([degree]));
+                    props.setToggleDegreeList(false)
+                }}></button>
+              <button aria-label='delete degree' className='delete' type='button' onClick={() => {
+                  props.setEducation(degrees.filter((value) => value !== degree))
+                }
+              }></button>
+            </div>
           </li> 
         )
       })}
     </ul> :
     <>
-      {props.click('editing', degreeBeingEdited.id)}
-      <button type='button' onClick={() => {
-        setCurrentDegreeBeingEdited(new Set())
-        props.setToggleDegreeList(true)
-      }}>Cancel</button>
+      {props.click('editing', degreeBeingEdited.id, setCurrentDegreeBeingEdited)}
     </>
   )
 }
@@ -273,7 +286,8 @@ function updateEducation(property, element, updatedDegreeInfo, setUpdatedDegreeI
 }
 
 function handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, education, setEducation, id, setToggleDegreeList) {
-  if (Object.values(updatedDegreeInfo).includes('')) return
+  let propertiesWithValues = Object.keys(updatedDegreeInfo).filter((value) => (updatedDegreeInfo[[value]] !== '' && value !== 'id'))
+  if (propertiesWithValues.length === 0) return
   let educationCopy = education
   let degree = null
   educationCopy.forEach((educationObj) => {
@@ -281,8 +295,12 @@ function handleEducationUpdate(updatedDegreeInfo, setUpdatedDegreeInfo, educatio
       degree = educationObj
     }
   })
+  propertiesWithValues.forEach((property) => {
+    degree = {...degree, [[property]]: updatedDegreeInfo[[property]]}
+  })
   let index = educationCopy.indexOf(degree)
-  educationCopy.splice(index, 1, updatedDegreeInfo)
+  console.log(degree)
+  educationCopy.splice(index, 1, degree)
   setEducation([...educationCopy])
   setUpdatedDegreeInfo({id: id, schoolName: '', studyTitle: '', studyStartDate: '', studyEndDate: '' })
   setToggleDegreeList(true)
