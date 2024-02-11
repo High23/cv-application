@@ -236,7 +236,7 @@ form > section > h2 {
     width: 30px;
 }
 
-img[src='../src/assets/plus.svg'] {
+img[src='/src/assets/plus.svg'] {
     width: 20px;
     padding-bottom: 3px;
 }

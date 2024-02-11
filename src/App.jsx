@@ -105,32 +105,32 @@ function App() {
     <main>
       <form action="/">
         <section id='general-information'>
-          <h2><img className='form-h2-icon' src='../src/assets/account-details.svg'></img>Personal Information</h2>
+          <h2><img className='form-h2-icon' src='/src/assets/account-details.svg'></img>Personal Information</h2>
           <Input placeHolder={'James White'} labelDesc={'full name'} type={'text'} onChange={(element) => { updateStateObj('fullName', element, personalInformation, setpersonalInformation )}} ></Input>
           <Input placeHolder={'notarealemail123@gmail.com'} labelDesc={'email'} type={'email'} onChange={(element) => { updateStateObj('email', element, personalInformation, setpersonalInformation )}} ></Input>
           <Input placeHolder={'555-555-5555'} labelDesc={'phone number'} type={'tel'} onChange={(element) => { updateStateObj('phoneNumber', element, personalInformation, setpersonalInformation )}} ></Input>
         </section>
         <section id='educational-experience'>
-          <h2><img className='form-h2-icon' src='../src/assets/school.svg'></img>Education</h2>
+          <h2><img className='form-h2-icon' src='/src/assets/school.svg'></img>Education</h2>
 
           {( Array.isArray(education) && education.length > 0  ) && 
           <Degrees education={education} setEducation={setEducation} click={educationInputs} toggleEducationInputs={setToggleEducationInputs} 
           toggleDegreeList={toggleDegreeList} setToggleDegreeList={setToggleDegreeList}></Degrees>}
 
           {(toggleEducationInputs && toggleDegreeList) && 
-          <button className='add-button' type='button' onClick={() => setToggleEducationInputs(false)}><img src='../src/assets/plus.svg'></img>Add Degree</button>}
+          <button className='add-button' type='button' onClick={() => setToggleEducationInputs(false)}><img src='/src/assets/plus.svg'></img>Add Degree</button>}
           
           {!toggleEducationInputs && educationInputs('submitting')}
         </section>
         <section id='work-experience'>
-          <h2><img className='form-h2-icon' src='../src/assets/briefcase.svg'></img>Work Experience</h2>
+          <h2><img className='form-h2-icon' src='/src/assets/briefcase.svg'></img>Work Experience</h2>
 
           {( Array.isArray(workExperience) && workExperience.length > 0  ) && 
           <Jobs workExperience={workExperience} setWorkExperience={setWorkExperience} click={workInputs} toggleWorkExperienceInputs={setToggleWorkExperienceInputs} 
           toggleJobList={toggleJobList} setToggleJobList={setToggleJobList}></Jobs>}
 
           {(toggleWorkExperienceInputs && toggleJobList) && 
-          <button className='add-button' type='button' onClick={() => setToggleWorkExperienceInputs(false)}><img src='../src/assets/plus.svg'></img>Add Job</button>}
+          <button className='add-button' type='button' onClick={() => setToggleWorkExperienceInputs(false)}><img src='/src/assets/plus.svg'></img>Add Job</button>}
           
           {!toggleWorkExperienceInputs && workInputs('submitting')}
         </section>
@@ -143,8 +143,8 @@ function App() {
               <span>{personalInformation.fullName}</span>
             </div>
             <div className='phone-and-email'>
-              <span><img className='header-icon' src='../src/assets/email-outline.svg'></img>{personalInformation.email}</span>
-              <span><img className='header-icon' src='../src/assets/phone.svg'></img>{personalInformation.phoneNumber}</span>
+              <span><img className='header-icon' src='/src/assets/email-outline.svg'></img>{personalInformation.email}</span>
+              <span><img className='header-icon' src='/src/assets/phone.svg'></img>{personalInformation.phoneNumber}</span>
             </div>
           </section>
           <section className='cv-body'>
