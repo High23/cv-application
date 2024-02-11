@@ -276,6 +276,10 @@ section > label {
     padding-bottom: 3px;
 }
 
+#job-description {
+    margin-bottom: 8px;
+}
+
 @media (max-width: 1000px) {
     .pfp-and-name > span {
         font-size: 2.1rem;
