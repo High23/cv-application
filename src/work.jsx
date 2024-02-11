@@ -46,7 +46,7 @@ function CvPreviewJobList(props) {
                 <li className='job-tenure'>{job.startDate} <div>{'-'  + job.endDate}</div></li>
                 <li className='position'><b>{job.positionTitle}</b></li>
                 <li className='company'><i>{job.companyName}</i></li>
-                <li className='description'><div>{job.description}</div></li>
+                {job.description !== '' && <li className='description'><div>{job.description}</div></li>}
             </ul> 
             )
         })}
