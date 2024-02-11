@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import './App.css'
-import { formatDate } from './App'
+import '../app.css'
+import { formatDate } from '../App'
 
 export {Jobs, CvPreviewJobList, handleJobSubmit, updateJobInfoObject, updateWorkExperience, handleJobUpdate}
 

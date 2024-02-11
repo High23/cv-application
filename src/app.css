@@ -198,11 +198,11 @@ form {
 }
 
 .edit {
-    background-image: url(src/assets/square-edit-outline.svg);
+    background-image: url(./images/square-edit-outline.svg);
 }
 
 .delete {
-    background-image: url(src/assets/delete.svg);
+    background-image: url(./images/delete.svg);
 }
 
 .edit, .delete {
@@ -211,6 +211,7 @@ form {
     width: 25px;
     height: 25px;
     border: none;
+    background-color: white;
 }
 
 .edit-and-delete-buttons {
@@ -236,7 +237,7 @@ form > section > h2 {
     width: 30px;
 }
 
-img[src='/src/assets/plus.svg'] {
+.add-button > img {
     width: 20px;
     padding-bottom: 3px;
 }

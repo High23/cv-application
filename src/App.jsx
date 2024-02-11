@@ -1,8 +1,15 @@
 import { useState } from 'react'
-import './App.css'
+import './app.css'
 import { format } from "date-fns";
 import {Jobs, CvPreviewJobList, handleJobSubmit, 
-  updateJobInfoObject, updateWorkExperience, handleJobUpdate} from './work'
+  updateJobInfoObject, updateWorkExperience, handleJobUpdate} from './components/work'
+import headerLogo from "./images/account-circle.svg"
+import detailsLogo from "./images/account-details.svg"
+import educationDetailsLogo from "./images/briefcase.svg"
+import briefcaseLogo from "./images/briefcase.svg"
+import emailLogo from "./images/email-outline.svg"
+import phoneLogo from "./images/phone.svg"
+import plusLogo from "./images/plus.svg"
 
 export {formatDate}
 
@@ -105,32 +112,32 @@ function App() {
     <main>
       <form action="/">
         <section id='general-information'>
-          <h2><img className='form-h2-icon' src='/src/assets/account-details.svg'></img>Personal Information</h2>
+          <h2><img className='form-h2-icon' src={detailsLogo}></img>Personal Information</h2>
           <Input placeHolder={'James White'} labelDesc={'full name'} type={'text'} onChange={(element) => { updateStateObj('fullName', element, personalInformation, setpersonalInformation )}} ></Input>
           <Input placeHolder={'notarealemail123@gmail.com'} labelDesc={'email'} type={'email'} onChange={(element) => { updateStateObj('email', element, personalInformation, setpersonalInformation )}} ></Input>
           <Input placeHolder={'555-555-5555'} labelDesc={'phone number'} type={'tel'} onChange={(element) => { updateStateObj('phoneNumber', element, personalInformation, setpersonalInformation )}} ></Input>
         </section>
         <section id='educational-experience'>
-          <h2><img className='form-h2-icon' src='/src/assets/school.svg'></img>Education</h2>
+          <h2><img className='form-h2-icon' src={educationDetailsLogo}></img>Education</h2>
 
           {( Array.isArray(education) && education.length > 0  ) && 
           <Degrees education={education} setEducation={setEducation} click={educationInputs} toggleEducationInputs={setToggleEducationInputs} 
           toggleDegreeList={toggleDegreeList} setToggleDegreeList={setToggleDegreeList}></Degrees>}
 
           {(toggleEducationInputs && toggleDegreeList) && 
-          <button className='add-button' type='button' onClick={() => setToggleEducationInputs(false)}><img src='/src/assets/plus.svg'></img>Add Degree</button>}
+          <button className='add-button' type='button' onClick={() => setToggleEducationInputs(false)}><img src={plusLogo}></img>Add Degree</button>}
           
           {!toggleEducationInputs && educationInputs('submitting')}
         </section>
         <section id='work-experience'>
-          <h2><img className='form-h2-icon' src='/src/assets/briefcase.svg'></img>Work Experience</h2>
+          <h2><img className='form-h2-icon' src={briefcaseLogo}></img>Work Experience</h2>
 
           {( Array.isArray(workExperience) && workExperience.length > 0  ) && 
           <Jobs workExperience={workExperience} setWorkExperience={setWorkExperience} click={workInputs} toggleWorkExperienceInputs={setToggleWorkExperienceInputs} 
           toggleJobList={toggleJobList} setToggleJobList={setToggleJobList}></Jobs>}
 
           {(toggleWorkExperienceInputs && toggleJobList) && 
-          <button className='add-button' type='button' onClick={() => setToggleWorkExperienceInputs(false)}><img src='/src/assets/plus.svg'></img>Add Job</button>}
+          <button className='add-button' type='button' onClick={() => setToggleWorkExperienceInputs(false)}><img src={plusLogo}></img>Add Job</button>}
           
           {!toggleWorkExperienceInputs && workInputs('submitting')}
         </section>
@@ -139,12 +146,12 @@ function App() {
         <div>
           <section className='cv-header'>
             <div className="pfp-and-name">
-              <img src="src/assets/account-circle.svg" alt="" />
+              <img src={headerLogo} alt="" />
               <span>{personalInformation.fullName}</span>
             </div>
             <div className='phone-and-email'>
-              <span><img className='header-icon' src='/src/assets/email-outline.svg'></img>{personalInformation.email}</span>
-              <span><img className='header-icon' src='/src/assets/phone.svg'></img>{personalInformation.phoneNumber}</span>
+              <span><img className='header-icon' src={emailLogo}></img>{personalInformation.email}</span>
+              <span><img className='header-icon' src={phoneLogo}></img>{personalInformation.phoneNumber}</span>
             </div>
           </section>
           <section className='cv-body'>
